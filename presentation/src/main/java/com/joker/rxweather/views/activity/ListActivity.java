@@ -89,6 +89,7 @@ public class ListActivity extends BaseActivity
     private View.OnClickListener retryClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            //第一步，点击事件
             ListActivity.this.listPresenter.loadData();
         }
     };

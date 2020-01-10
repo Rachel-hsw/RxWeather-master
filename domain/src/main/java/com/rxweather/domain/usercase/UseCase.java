@@ -1,6 +1,7 @@
 package com.rxweather.domain.usercase;
 
 import android.support.annotation.CheckResult;
+
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
@@ -12,25 +13,32 @@ import rx.subscriptions.Subscriptions;
  */
 public abstract class UseCase<T, R> {
 
-  private Subscription subscription = Subscriptions.empty();
+    private Subscription subscription = Subscriptions.empty();
 
-  @SuppressWarnings("unchecked") public void subscribe(Observer<T> UseCaseSubscriber, R params) {
+    @SuppressWarnings("unchecked")
+    public void subscribe(Observer<T> UseCaseSubscriber, R params) {
 
-    UseCase.this.subscription = this.interactor(params)//
-        .onBackpressureBuffer()//
-        .take(1)//
-        .filter(new Func1<T, Boolean>() {
-          @Override public Boolean call(T t) {
-            return !subscription.isUnsubscribed();
-          }
-        }).subscribe(UseCaseSubscriber);
-  }
-
-  public void unsubscribe() {
-    if (!subscription.isUnsubscribed()) {
-      subscription.unsubscribe();
+        //第三步
+        UseCase.this.subscription = this.interactor(params)//
+                .onBackpressureBuffer()//
+                .take(1)//
+                .filter(new Func1<T, Boolean>() {
+                    @Override
+                    public Boolean call(T t) {
+                        return !subscription.isUnsubscribed();
+                    }
+                }).subscribe(UseCaseSubscriber);
     }
-  }
 
-  @CheckResult protected abstract Observable<T> interactor(R params);
+    public void unsubscribe() {
+        if (!subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+        }
+    }
+
+    /**
+     * 第四步 传进来的是UseCase的哪个子类，就调用哪个子类的方法
+     */
+    @CheckResult
+    protected abstract Observable<T> interactor(R params);
 }

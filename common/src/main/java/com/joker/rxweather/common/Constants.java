@@ -7,9 +7,11 @@ public class Constants {
 
   public static final String LOCATION_KEY = "28bcdd84fae25699606ffad27f8da77b";
   public static final String FORECAST_KEY = "29fa754431304550b49cc3187c58cb06";
+//  public static final String FORECAST_KEY = "f73128e26dfb45ff82d2075f1371df62";
 
   public static final String LOCATION_BASE_URL = "http://api.map.baidu.com";
-  public static final String FORECAST_BASE_URL = "https://api.heweather.com/x3";
+//  public static final String FORECAST_BASE_URL = "https://api.heweather.com/x3";
+  public static final String FORECAST_BASE_URL = "https://free-api.heweather.com/s6";
   public static final String ICON_URL = "http://files.heweather.com/cond_icon/";
 
   public static final String J_URL = "https://github.com/SmartDengg/RxWeather";
