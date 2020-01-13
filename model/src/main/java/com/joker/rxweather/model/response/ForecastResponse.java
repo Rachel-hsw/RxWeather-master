@@ -2,6 +2,7 @@ package com.joker.rxweather.model.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -157,226 +158,141 @@ public class ForecastResponse {
       ]
     }*/
 
-  @Expose @SerializedName("HeWeather data service 3.0") private List<Main> mains;
+    @Expose
+    @SerializedName("HeWeather6")
+    private List<Main> mains;
 
-  public List<Main> getMains() {
-    return mains;
-  }
-
-  public class Main extends BaseResponse {
-
-    /**
-     * 基本信息
-     */
-    @Expose private Basic basic;
-
-    public Basic getBasic() {
-      return basic;
+    public List<Main> getMains() {
+        return mains;
     }
 
-    public class Basic {
+    public class Main extends BaseResponse {
 
-      @Expose @SerializedName("id") public String cityId;
-      @Expose @SerializedName("city") public String cityName;
+        /**
+         * 基本信息
+         */
+        @Expose
+        @SerializedName("basic")
+        private Basic basic;
 
-      @Override public String toString() {
-        return "Basic{" +
-            "cityName='" + cityName + '\'' +
-            ", cityId='" + cityId + '\'' +
-            '}';
-      }
-    }
-
-    /**
-     * 一周气温
-     */
-    @Expose @SerializedName("daily_forecast") private List<Forecast> forecasts;
-
-    public List<Forecast> getForecasts() {
-      return forecasts;
-    }
-
-    public class Forecast {
-
-      @Expose @SerializedName("cond") private Condition condition;
-
-      public Condition getCondition() {
-        return condition;
-      }
-
-      public class Condition {
-
-        @Expose @SerializedName("code_d") public String dayCode;
-        @Expose @SerializedName("code_n") public String nightCode;
-        @Expose @SerializedName("txt_d") public String dayText;
-        @Expose @SerializedName("txt_n") public String nightText;
-
-        @Override public String toString() {
-          return "Cond{" +
-              "dayCode='" + dayCode + '\'' +
-              ", nightCode='" + nightCode + '\'' +
-              ", dayText='" + dayText + '\'' +
-              ", nightText='" + nightText + '\'' +
-              '}';
+        public Basic getBasic() {
+            return basic;
         }
-      }
 
-      @Expose public String date;
+        public class Basic {
 
-      @Expose @SerializedName("tmp") private Temperature temperature;
+            @Expose
+            @SerializedName("cid")
+            public String cityId;
+            @Expose
+            @SerializedName("location")
+            public String cityName;
 
-      public Temperature getTemperature() {
-        return temperature;
-      }
-
-      public class Temperature {
-
-        @Expose @SerializedName("max") public String maxTemp;
-        @Expose @SerializedName("min") public String minTemp;
-
-        @Override public String toString() {
-          return "Temperature{" +
-              "maxTemp='" + maxTemp + '\'' +
-              ", minTemp='" + minTemp + '\'' +
-              '}';
+            @Override
+            public String toString() {
+                return "Basic{" +
+                        "cityName='" + cityName + '\'' +
+                        ", cityId='" + cityId + '\'' +
+                        '}';
+            }
         }
-      }
 
-      @Expose @SerializedName("wind") private Wind wind;
+        /**
+         * 一周气温
+         */
+        @Expose
+        @SerializedName("daily_forecast")
+        private List<Forecast> forecasts;
 
-      public Wind getWind() {
-        return wind;
-      }
-
-      public class Wind {
-        @Expose @SerializedName("dir") public String description;
-        @Expose @SerializedName("sc") public String windGrade;
-
-        @Override public String toString() {
-          return "Wind{" +
-              "description='" + description + '\'' +
-              ", windGrade='" + windGrade + '\'' +
-              '}';
+        public List<Forecast> getForecasts() {
+            return forecasts;
         }
-      }
 
-      @Override public String toString() {
-        return "Forecast{" +
-            "condition=" + condition +
-            ", date='" + date + '\'' +
-            ", temperature=" + temperature +
-            ", wind=" + wind +
-            '}';
-      }
-    }
-
-    /**
-     * 当前气温
-     */
-    @Expose @SerializedName("now") private CurrentWeather currentWeather;
-
-    public CurrentWeather getCurrentWeather() {
-      return currentWeather;
-    }
-
-    public class CurrentWeather {
-
-      @Expose @SerializedName("cond") private Condition condition;
-
-      public Condition getCondition() {
-        return condition;
-      }
-
-      public class Condition {
-
-        @Expose @SerializedName("code") public String weatherCode;
-        @Expose @SerializedName("txt") public String weatherText;
-
-        @Override public String toString() {
-          return "Condition{" +
-              "weatherCode='" + weatherCode + '\'' +
-              ", weatherText='" + weatherText + '\'' +
-              '}';
+        public class Forecast {
+            @Expose
+            @SerializedName("cond_code_d")
+            public String dayCode;
+            @Expose
+            @SerializedName("cond_code_n")
+            public String nightCode;
+            @Expose
+            @SerializedName("cond_txt_d")
+            public String dayText;
+            @Expose
+            @SerializedName("cond_txt_n")
+            public String nightText;
+            @Expose
+            public String date;
+            @Expose
+            @SerializedName("tmp_max")
+            public String maxTemp;
+            @Expose
+            @SerializedName("tmp_min")
+            public String minTemp;
+            @Expose
+            @SerializedName("wind_dir")
+            public String description;
+            @Expose
+            @SerializedName("wind_sc")
+            public String windGrade;
         }
-      }
 
-      @Expose @SerializedName("tmp") public String temperature;
+        /**
+         * 当前气温
+         */
+        @Expose
+        @SerializedName("now")
+        private CurrentWeather currentWeather;
 
-      @Expose @SerializedName("wind") private Wind wind;
-
-      public Wind getWind() {
-        return wind;
-      }
-
-      public class Wind {
-        @Expose @SerializedName("dir") public String description;
-        @Expose @SerializedName("sc") public String windGrade;
-
-        @Override public String toString() {
-          return "Wind{" +
-              "description='" + description + '\'' +
-              ", windGrade='" + windGrade + '\'' +
-              '}';
+        public CurrentWeather getCurrentWeather() {
+            return currentWeather;
         }
-      }
 
-      @Override public String toString() {
-        return "CurrentWeather{" +
-            "condition=" + condition +
-            ", temperature='" + temperature + '\'' +
-            ", wind=" + wind +
-            '}';
-      }
-    }
+        public class CurrentWeather {
+            @Expose
+            @SerializedName("cloud")
+            private String cloud;
 
-    /**
-     * 生活指数
-     */
-    @Expose @SerializedName("suggestion") private Suggestion suggestion;
+            @Expose
+            @SerializedName("cond_code")
+            public String weatherCode;
+            @Expose
+            @SerializedName("cond_txt")
+            public String weatherText;
+            @Expose
+            @SerializedName("tmp")
+            public String temperature;
 
-    public Suggestion getSuggestion() {
-      return suggestion;
-    }
-
-    public class Suggestion {
-
-      @Expose @SerializedName("drsg") private Drsg drsg;
-
-      public Drsg getDrsg() {
-        return drsg;
-      }
-
-      public class Drsg {
-
-        @Expose @SerializedName("txt") public String description;
-
-        @Override public String toString() {
-          return "Drsg{" +
-              "description='" + description + '\'' +
-              '}';
+            @Expose
+            @SerializedName("wind_dir")
+            public String description;
+            @Expose
+            @SerializedName("wind_sc")
+            public String windGrade;
         }
-      }
 
-      @Override public String toString() {
-        return "Suggestion{" +
-            "drsg=" + drsg +
-            '}';
-      }
+        /**
+         * 生活指数
+         */
+        @Expose
+        @SerializedName("lifestyle")
+        private List<Suggestion> suggestions;
+
+        public List<Suggestion> getSuggestions() {
+            return suggestions;
+        }
+
+        public class Suggestion {
+            @Expose
+            @SerializedName("txt")
+            public String description;
+        }
     }
 
-    @Override public String toString() {
-      return "Main{" +
-          "basic=" + basic +
-          ", forecasts=" + forecasts +
-          ", currentWeather=" + currentWeather +
-          ", suggestion=" + suggestion +
-          '}';
+    @Override
+    public String toString() {
+        return "ForecastResponse{" +
+                "mains=" + mains +
+                '}';
     }
-  }
-
-  @Override public String toString() {
-    return "ForecastResponse{" +
-        "mains=" + mains +
-        '}';
-  }
 }

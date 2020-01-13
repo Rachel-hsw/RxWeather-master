@@ -33,6 +33,8 @@ import rx.functions.Func2;
 
 /**
  * Created by Joker on 2015/10/31.
+ * 获取地理位置
+ * http://api.map.baidu.com/geocoder?location=31.300525%2C120.57900833333333&key=28bcdd84fae25699606ffad27f8da77b&output=json
  */
 public class PrepareCase extends UseCase<SparseArray, PrepareRequest> {
 

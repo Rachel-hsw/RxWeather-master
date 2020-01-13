@@ -110,7 +110,8 @@ public class ServiceRest {
     private Observable<MainEntity> getForecastByLocation(AddressEntity addressEntity) {
 
         HashMap<String, String> locationPrams = new HashMap<>(2);
-        locationPrams.put("city", addressEntity.city);
+        locationPrams.put("location", addressEntity.city);
+//        locationPrams.put("city", addressEntity.city);
         locationPrams.put("key", Constants.FORECAST_KEY);
 
         return serviceApi.getForecastByKey(locationPrams)
@@ -118,19 +119,24 @@ public class ServiceRest {
                 .retry(new Func2<Integer, Throwable, Boolean>() {
                     @Override
                     public Boolean call(Integer integer, Throwable throwable) {
+                        Log.i("Rachel", "--------");
                         return throwable instanceof TimeoutException && integer < 1;
                     }
                 })
                 .concatMap(new Func1<ForecastResponse, Observable<ForecastResponse.Main>>() {
                     @Override
                     public Observable<ForecastResponse.Main> call(ForecastResponse forecastResponse) {
+                        Log.i("Rachel", "--------");
+                        if (forecastResponse.getMains() == null) {
+                            return null;
+                        }
                         return forecastResponse.getMains().get(0).filterWebService();
                     }
                 })
                 .concatMap(new Func1<ForecastResponse.Main, Observable<MainEntity>>() {
                     @Override
                     public Observable<MainEntity> call(ForecastResponse.Main main) {
-
+                        Log.i("Rachel", "--------");
                         return Observable.combineLatest(ServiceRest.this.liftWeather(main),
                                 ServiceRest.this.transferForecast(main.getForecasts()),
                                 new Func2<WeatherEntity, List<ForecastWeatherEntity>, MainEntity>() {
@@ -158,7 +164,8 @@ public class ServiceRest {
                     public Observable<ForecastResponse> call(RequestCitiesEntity.RequestCity requestCity) {
 
                         HashMap<String, String> cityParams = new HashMap<>(2);
-                        cityParams.put("cityid", requestCity.id);
+                        cityParams.put("location", requestCity.id);
+//                        cityParams.put("cityid", requestCity.id);
                         cityParams.put("key", Constants.FORECAST_KEY);
 
                         return serviceApi.getForecastByKey(cityParams)
@@ -175,6 +182,9 @@ public class ServiceRest {
                 .concatMap(new Func1<ForecastResponse, Observable<ForecastResponse.Main>>() {
                     @Override
                     public Observable<ForecastResponse.Main> call(ForecastResponse forecastResponse) {
+                        if (forecastResponse.getMains() == null) {
+                            return null;
+                        }
                         return forecastResponse.getMains().get(0).filterWebService();
                     }
                 })
@@ -208,15 +218,10 @@ public class ServiceRest {
 
                 /**/
                 ForecastResponse.Main.CurrentWeather currentWeather = main.getCurrentWeather();
-                ForecastResponse.Main.CurrentWeather.Condition condition = currentWeather.getCondition();
-                ForecastResponse.Main.CurrentWeather.Wind wind = currentWeather.getWind();
 
-                /**/
-                ForecastResponse.Main.Suggestion.Drsg drsg = main.getSuggestion().getDrsg();
-
-                return new WeatherEntity(basic.cityId, basic.cityName, condition.weatherCode,
-                        condition.weatherText, currentWeather.temperature,
-                        wind.description + wind.windGrade + "级", drsg.description);
+                return new WeatherEntity(basic.cityId, basic.cityName, currentWeather.weatherCode,
+                        currentWeather.weatherText, currentWeather.temperature,
+                        currentWeather.description + currentWeather.windGrade + "级", currentWeather.description);
             }
         });
     }
@@ -230,18 +235,18 @@ public class ServiceRest {
                     public ForecastWeatherEntity call(ForecastResponse.Main.Forecast forecast) {
 
                         ForecastWeatherEntity forecastWeatherEntity = forecastEntity.newInstance();
-                        forecastWeatherEntity.setDayCode(forecast.getCondition().dayCode);
-                        forecastWeatherEntity.setNightCode(forecast.getCondition().nightCode);
-                        forecastWeatherEntity.setDayText(forecast.getCondition().dayText);
-                        forecastWeatherEntity.setNightText(forecast.getCondition().nightText);
+                        forecastWeatherEntity.setDayCode(forecast.dayCode);
+                        forecastWeatherEntity.setNightCode(forecast.nightCode);
+                        forecastWeatherEntity.setDayText(forecast.dayText);
+                        forecastWeatherEntity.setNightText(forecast.nightText);
 
                         forecastWeatherEntity.setDate(forecast.date);
 
-                        forecastWeatherEntity.setMaxTemp(forecast.getTemperature().maxTemp);
-                        forecastWeatherEntity.setMinTemp(forecast.getTemperature().minTemp);
+                        forecastWeatherEntity.setMaxTemp(forecast.maxTemp);
+                        forecastWeatherEntity.setMinTemp(forecast.minTemp);
 
-                        forecastWeatherEntity.setWindDescription(forecast.getWind().windGrade +
-                                forecast.getWind().description + "级");
+                        forecastWeatherEntity.setWindDescription(forecast.windGrade +
+                                forecast.description + "级");
 
                         return forecastWeatherEntity;
                     }
@@ -323,11 +328,9 @@ public class ServiceRest {
                     public SearchEntity call(ForecastResponse.Main main) {
 
                         ForecastResponse.Main.CurrentWeather currentWeather = main.getCurrentWeather();
-                        ForecastResponse.Main.CurrentWeather.Condition condition =
-                                currentWeather.getCondition();
 
-                        return new SearchEntity(currentWeather.temperature, condition.weatherText,
-                                condition.weatherCode);
+                        return new SearchEntity(currentWeather.temperature, currentWeather.weatherText,
+                                currentWeather.weatherCode);
                     }
                 })
                 .compose(SchedulersCompat.<SearchEntity>applyExecutorSchedulers());

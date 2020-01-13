@@ -10,6 +10,7 @@ import rx.subscriptions.Subscriptions;
 
 /**
  * Created by Joker on 2015/10/31.
+ *
  */
 public abstract class UseCase<T, R> {
 

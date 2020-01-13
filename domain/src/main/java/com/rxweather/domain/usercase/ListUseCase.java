@@ -10,6 +10,7 @@ import rx.Observable;
 
 /**
  * Created by Joker on 2015/10/31.
+ * 根据地理位置获取天气信息
  */
 public class ListUseCase extends UseCase<List<MainEntity>, ListRequest> {
 
